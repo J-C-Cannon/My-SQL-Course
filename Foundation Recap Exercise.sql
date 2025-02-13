@@ -8,47 +8,80 @@ This lists 44 patients admitted to London hospitals over 5 days between Feb 26th
 --1. List the patients -
 --a) in the Oxleas or PRUH hospitals and
 
-SELECT * FROM PatientStay ps 
-where Hospital in ('Oxleas','PRUH')
+SELECT
+	*
+FROM
+	PatientStay ps
+WHERE Hospital IN ('Oxleas','PRUH')
 
 --b) admitted in February 2024
 
-SELECT * FROM PatientStay ps 
-where AdmittedDate between '20240201' and '20240229'
+SELECT
+	*
+FROM
+	PatientStay ps
+WHERE AdmittedDate BETWEEN '20240201' AND '20240229'
 
 -- using Month to filter
-select * from patientStay 
-where Month(admitteddate) between 2 and 3
-order by AdmittedDate
+SELECT
+	*
+FROM
+	patientStay
+WHERE Month(admitteddate) BETWEEN 2 AND 3
+ORDER BY AdmittedDate
 
 --c) only the Surgery wards
-SELECT * FROM PatientStay ps 
-where ward like '%Surgery%'
+SELECT
+	*
+FROM
+	PatientStay ps
+WHERE ward LIKE '%Surgery%'
 
 
 -- Starting with 'D'
-SELECT * FROM PatientStay ps 
-where ward like 'D%'
+SELECT
+	*
+FROM
+	PatientStay ps
+WHERE ward LIKE 'D%'
 
 
 --2. Show the PatientId, AdmittedDate, DischargeDate, Hospital and Ward columns only, not all the columns.
 
-select PatientId,AdmittedDate,DischargeDate,Hospital,Ward From PatientStay order by AdmittedDate
+SELECT
+	PatientId 
+	,AdmittedDate 
+	,DischargeDate 
+	,Hospital 
+	,Ward
+FROM
+	PatientStay
+ORDER BY AdmittedDate
 
 
 --3. Order results by AdmittedDate (latest first) then PatientID column (high to low)
-select PatientId,AdmittedDate,DischargeDate,Hospital,Ward,datediff(day,admitteddate,DischargeDate) as [LoS] From PatientStay
-order by AdmittedDate Desc, PatientId DESC
+
+SELECT
+	PatientId 
+	,AdmittedDate 
+	,DischargeDate 
+	,Hospital 
+	,Ward 
+	,datediff(day,admitteddate,DischargeDate) AS [LoS]
+FROM
+	PatientStay
+ORDER BY AdmittedDate DESC, PatientId DESC
 
 --4. Add a new column LengthOfStay which calculates the number of days that the patient stayed in hospital, inclusive of both admitted and discharge date.
-select 
-	ps.PatientId,
-	ps.AdmittedDate,
-	ps.DischargeDate,
-	ps.Hospital,
-	ps.Ward, 
-	cast(datediff(day,ps.admitteddate,ps.DischargeDate)+1 as varchar) + ' Days' as [LoS] 
-From PatientStay ps
+SELECT
+	ps.PatientId
+	,ps.AdmittedDate
+	,ps.DischargeDate
+	,ps.Hospital
+	,ps.Ward
+	,cast(datediff(day,ps.admitteddate,ps.DischargeDate)+1 AS varchar) + ' Days' AS [LoS]
+FROM
+	PatientStay ps
 
 
 /*
@@ -65,22 +98,47 @@ c) only the Surgery wards
 -- Write the SQL statement here
 
 --5. How many patients has each hospital admitted? 
-SELECT Hospital,count(*) as [CountOfPats] FROM PatientStay ps 
-group by hospital order by 2 desc
+
+
+
+SELECT
+	Hospital
+	,count(*) AS [CountOfPats]
+FROM
+	PatientStay ps
+GROUP BY hospital
+ORDER BY 2 DESC
 
 --6. How much is the total tarriff for each hospital?
-SELECT Hospital,sum(tariff) FROM PatientStay ps 
-group by Hospital
+SELECT
+	Hospital 
+	,sum(tariff)
+FROM
+	PatientStay ps
+GROUP BY Hospital
 
 --7. List only those hospitals that have admitted over 10 patients
-SELECT Hospital, count(*) as [CountOfPats] FROM PatientStay ps 
-group by hospital order by 2 desc
+SELECT
+	Hospital 
+	,count(*) AS [CountOfPats]
+FROM
+	PatientStay ps
+GROUP BY hospital
+ORDER BY 2 DESC
 -- No clue with the one above
 
 --8. Order by the hospital with most admissions first
-SELECT * FROM PatientStay ps 
+SELECT
+	*
+FROM
+	PatientStay ps
 
-SELECT hospital, count(*) FROM PatientStay ps 
+SELECT
+	ps.Hospital 
+	,count(*)
+FROM
+	PatientStay ps
+GROUP BY ps.Hospital
 
 
 
@@ -107,3 +165,10 @@ SELECT hospital, count(*) FROM PatientStay ps
 
 
 --8. Order by the hospital with most admissions first
+
+
+
+
+select 
+count(*) as [Count of Pat]
+from PatientStay
